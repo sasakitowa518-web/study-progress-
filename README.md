@@ -19,7 +19,7 @@
 3. 手順は [FIREBASE_SETUP.md](./FIREBASE_SETUP.md) を参照してください。
 4. Firestoreには [firestore.rules](./firestore.rules) のユーザー別アクセス制限を設定してください。
 
-Firebase設定をしていない場合も、ブラウザのローカル保存機能を利用できます。Firebase設定が完了するまではログイン・新規登録ボタンは無効です。
+Firebase Webアプリ設定は `study-progress-9245d` 用に反映済みです。アカウント登録・クラウド同期を使うには、Firebase Consoleでメール／パスワード認証とFirestoreを有効化し、Firestoreルールをデプロイしてください。詳細は [FIREBASE_SETUP.md](./FIREBASE_SETUP.md) を参照してください。
 
 ## Firebase Hosting で公開する場合
 
