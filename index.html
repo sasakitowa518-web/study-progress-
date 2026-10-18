@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#202c49">
+<title>Study Progress｜参考書進捗ノート</title>
+<style>
+:root{--navy:#202c49;--blue:#6478df;--bg:#f4f6fb;--muted:#69758c;--line:#e1e6f0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif;color:#202c49}
+header{background:var(--navy);color:white;padding:28px max(18px,calc((100% - 960px)/2)) 26px}
+.brand{display:flex;align-items:center;gap:12px}.logo{background:#a9b9ff;color:#202c49;border-radius:12px;padding:12px;font-size:22px}
+h1{font-size:22px;margin:0}header p{margin:5px 0 0;color:#cbd5ed;font-size:13px}.intro{margin:25px 0 18px;font-size:24px;font-weight:750}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}.stat{background:#34415f;padding:16px;border-radius:14px}.stat small{display:block;color:#cbd5ed}.stat strong{font-size:25px;display:block;margin:5px 0}.stat span{font-size:12px;color:#d5dcef}
+main{max-width:960px;margin:0 auto;padding:22px 16px 48px}.topline{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.topline h2{margin:0;font-size:20px}.muted{color:var(--muted);font-size:13px}
+button{border:0;border-radius:10px;padding:10px 13px;background:var(--blue);color:white;font-weight:650;cursor:pointer;font-size:14px}button:disabled{opacity:.4;cursor:not-allowed}.outline{background:white;color:#34415f;border:1px solid var(--line)}.danger{background:#fff1f1;color:#b42332;border:1px solid #f3d1d5}
+.filters{display:flex;gap:7px;flex-wrap:wrap;margin:18px 0}.filters button{border:1px solid var(--line);background:white;color:#536078}.filters button.active{background:var(--navy);color:white}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:14px}.book{background:white;border:1px solid var(--line);border-radius:16px;padding:17px;box-shadow:0 2px 7px #202c4907}.bookhead{display:flex;align-items:flex-start;gap:12px}.bookicon{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:white;font-size:21px;flex-shrink:0}.booktitle{font-weight:750;line-height:1.4;overflow-wrap:anywhere}.tag{display:inline-block;margin-top:6px;background:#f0f2f8;color:#5d6880;border-radius:20px;padding:3px 8px;font-size:11px}.pct{margin-left:auto;font-weight:800;font-size:22px}.bar{height:8px;border-radius:99px;background:#e9edf5;margin:18px 0 8px;overflow:hidden}.fill{height:100%;border-radius:99px}.bookmeta{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted)}.deadline{background:#f1f4ff;border-radius:10px;padding:10px 11px;margin-top:12px;display:grid;gap:5px;font-size:12px;color:#45557f}.deadlinehead{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}.deadlinehead strong{color:#344caa}.pace-main{font-size:14px;font-weight:750;color:#283a76}.actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap;border-top:1px solid #edf0f5;margin-top:15px;padding-top:13px}.actions .spacer{flex:1}.actions button{padding:8px 10px}.formbox,.tools{background:white;border:1px solid var(--line);border-radius:16px;padding:18px;margin:18px 0}.formbox[hidden]{display:none}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}.field.full{grid-column:1/-1}label{font-size:13px;font-weight:650;color:#4e5b73}input,select{width:100%;border:1px solid #d8deea;border-radius:10px;padding:11px;font:inherit;background:white;color:#202c49}input:focus,select:focus{outline:2px solid #a9b9ff;border-color:#6478df}.formbuttons{display:flex;gap:8px;flex-wrap:wrap}.tools{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.empty{text-align:center;padding:35px;color:var(--muted);background:white;border-radius:14px;border:1px dashed var(--line)}.notice{font-size:12px;color:var(--muted);margin-top:18px;line-height:1.7}.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#202c49;color:white;padding:11px 16px;border-radius:12px;box-shadow:0 5px 25px #0002;display:none;max-width:90vw}
+@media(max-width:520px){header{padding:22px 16px}.intro{font-size:21px}.stat strong{font-size:21px}main{padding:18px 12px 35px}.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}.book{padding:14px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand"><div class="logo">▤</div><div><h1>Study Progress</h1><p>MY STUDY DASHBOARD</p></div></div>
+ <div class="intro">今日も一歩ずつ。</div><p style="margin-bottom:16px">積み重ねた学習を、見える進捗に。</p>
+ <div class="stats"><div class="stat"><small>総合進捗率</small><strong id="overall">0%</strong><div class="bar" style="background:#526080;margin:8px 0 5px"><div id="overallbar" class="fill" style="background:#a9b9ff;width:0%"></div></div><span>登録した教材全体の進捗</span></div>
+ <div class="stat"><small>学習済み / 全体</small><strong id="summary">0 / 0</strong><span id="remaining">残り 0</span></div></div>
+</header>
+<main>
+ <div class="topline"><div><h2>参考書一覧</h2><div class="muted" id="count">0 冊を管理中</div></div><button id="addToggle">＋ 参考書を追加</button></div>
+ <section class="formbox" id="formbox" hidden><h3 id="formheading" style="margin:0 0 16px">新しい教材を登録</h3>
+  <form id="bookform"><input id="editId" type="hidden"><div class="formgrid">
+   <div class="field full"><label for="title">参考書・教材名</label><input id="title" required maxlength="120" placeholder="例：英文法ポラリス1"></div>
+   <div class="field"><label for="subject">科目</label><select id="subject"><option>英語</option><option>数学</option><option>国語</option><option>理科</option><option>社会</option><option>その他</option></select></div>
+   <div class="field"><label for="unit">記録単位（自由に設定）</label><input id="unit" required maxlength="20" value="ページ" placeholder="ページ、問題、章、分、単語など"></div>
+   <div class="field"><label for="step">一度に記録する量</label><input id="step" type="number" min="0.01" step="any" required value="10"><span class="muted">例：ページなら10、問題なら5、時間なら0.5</span></div>
+   <div class="field"><label for="total">全体の数量</label><input id="total" type="number" min="0.01" step="any" required value="300"></div>
+   <div class="field"><label for="current">現在の進捗</label><input id="current" type="number" min="0" step="any" required value="0"></div>
+   <div class="field full"><label for="deadline">完了目標日（任意）</label><input id="deadline" type="date"><span class="muted">目標日を設定すると、1日あたりに進める必要がある量を自動計算します。</span></div>
+  </div><div class="formbuttons"><button type="submit">保存する</button><button type="button" class="outline" id="cancel">キャンセル</button></div></form>
+ </section>
+ <section class="tools" id="accountBox" style="align-items:flex-start">
+  <div style="flex:1;min-width:220px"><strong>アカウント・端末間同期</strong><div class="muted" id="authStatus" style="margin-top:6px">Firebaseの設定後、アカウントを作成すると端末間で同期できます。</div></div>
+  <form id="authForm" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;flex:2;min-width:260px">
+    <input id="authEmail" type="email" autocomplete="email" required placeholder="メールアドレス" style="flex:1;min-width:180px">
+    <input id="authPassword" type="password" autocomplete="current-password" minlength="6" required placeholder="パスワード（6文字以上）" style="flex:1;min-width:180px">
+    <button type="submit" id="loginBtn">ログイン</button><button type="button" class="outline" id="signupBtn">新規登録</button><button type="button" class="outline" id="logoutBtn" hidden>ログアウト</button>
+  </form>
+</section>
+<div class="filters" id="filters"></div><div class="cards" id="cards"></div>
+ <section class="tools"><div><strong>データのバックアップ</strong><div class="muted">別の端末へ移すときは書き出して読み込みます。</div></div><div class="formbuttons"><button class="outline" id="exportBtn">データを書き出す</button><button class="outline" id="importBtn">読み込む</button><input id="importFile" type="file" accept="application/json,.json" hidden></div></section>
+ <div class="notice">保存先：未ログイン時はこのブラウザ、ログイン中はFirebaseのクラウドにも保存します。同じアカウントでログインするとスマホ・パソコン間で同期されます。同期を使うには、下記コードのFirebase設定とFirestoreセキュリティルールの設定が必要です。</div>
+</main><div class="toast" id="toast" role="status"></div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+
+// Firebase Consoleで作成したWebアプリの設定を、下の値に貼り付けてください。
+const firebaseConfig = {
+  apiKey: "ここにapiKey",
+  authDomain: "ここにprojectId.firebaseapp.com",
+  projectId: "ここにprojectId",
+  appId: "ここにappId"
+};
+const firebaseReady = firebaseConfig.apiKey !== "ここにapiKey" &&
+                      firebaseConfig.projectId !== "ここにprojectId";
+let auth = null, db = null, currentUser = null, stopCloudListener = null, cloudLoading = false;
+if (firebaseReady) {
+  const app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  db = getFirestore(app);
+} else {
+  document.getElementById('authStatus').textContent = 'Firebaseの設定がまだです。コード内の firebaseConfig を設定するとアカウント登録・同期が有効になります。';
+  document.getElementById('loginBtn').disabled = true;
+  document.getElementById('signupBtn').disabled = true;
+}
+const KEY='study-progress-v1';
+const defaults=[
+{id:1,title:'英単語ターゲット1900',subject:'英語',unit:'ページ',step:10,total:1900,current:680,color:'#6478df'},
+{id:2,title:'数学 基礎問題精講',subject:'数学',unit:'ページ',step:10,total:240,current:96,color:'#20a58a'},
+{id:3,title:'古文単語315',subject:'国語',unit:'単語',step:10,total:315,current:210,color:'#df9b48'}];
+let books=load();let filter='すべて';let toastTimer;
+function load(){try{const v=JSON.parse(localStorage.getItem(KEY));return Array.isArray(v)?v:defaults.map(x=>({...x}));}catch{return defaults.map(x=>({...x}));}}
+function save(){
+ localStorage.setItem(KEY,JSON.stringify(books));render();
+ if(currentUser && !cloudLoading && db){
+   setDoc(doc(db,'users',currentUser.uid,'appData','studyProgress'),{books,updatedAt:Date.now()})
+    .then(()=>{document.getElementById('authStatus').textContent=`${currentUser.email} でログイン中 · クラウド同期済み`;})
+    .catch(err=>{console.error(err);toast('クラウド保存に失敗しました。通信やFirestoreルールを確認してください。');});
+ }
+}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function fmt(n){return Number(n).toLocaleString('ja-JP',{maximumFractionDigits:2});}
+function toast(s){const el=document.getElementById('toast');el.textContent=s;el.style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.style.display='none',2400);}
+function render(){
+ const total=books.reduce((a,b)=>a+Number(b.total),0),done=books.reduce((a,b)=>a+Math.min(Number(b.current),Number(b.total)),0),pct=total?Math.round(done/total*100):0;
+ document.getElementById('overall').textContent=pct+'%';document.getElementById('overallbar').style.width=pct+'%';
+ document.getElementById('summary').textContent=fmt(done)+' / '+fmt(total);
+ document.getElementById('remaining').textContent='残り '+fmt(books.reduce((a,b)=>a+Math.max(0,b.total-b.current),0))+'（単位は教材ごとに異なります）';
+ document.getElementById('count').textContent=books.length+' 冊を管理中 · 完了 '+books.filter(b=>b.current>=b.total).length+' 冊';
+ const subjects=['すべて',...new Set(books.map(b=>b.subject))];
+ document.getElementById('filters').innerHTML=subjects.map(s=>`<button class="${filter===s?'active':''}" data-filter="${esc(s)}">${esc(s)}</button>`).join('');
+ document.getElementById('cards').innerHTML=books.filter(b=>filter==='すべて'||b.subject===filter).map(b=>{
+ const p=Math.min(100,Math.round(b.current/b.total*100)),left=Math.max(0,b.total-b.current);
+ return `<article class="book"><div class="bookhead"><div class="bookicon" style="background:${b.color||'#6478df'}">▤</div><div style="min-width:0;flex:1"><div class="booktitle">${esc(b.title)}</div><span class="tag">${esc(b.subject)} · ${esc(b.unit)}</span></div><div class="pct" style="color:${b.color||'#6478df'}">${p}%</div></div>
+ <div class="bar"><div class="fill" style="width:${p}%;background:${b.color||'#6478df'}"></div></div>
+ <div class="bookmeta"><span>${fmt(b.current)} / ${fmt(b.total)} ${esc(b.unit)}</span><span>${b.current>=b.total?'完了！':'残り '+fmt(left)+' '+esc(b.unit)}</span></div>
+ ${b.deadline?(()=>{const now=new Date();now.setHours(0,0,0,0);const due=new Date(b.deadline+'T00:00:00');const days=Math.ceil((due-now)/86400000);const daily=days>0?left/days:left;return `<div class="deadline"><div class="deadlinehead"><span>🎯 完了目標：${esc(b.deadline)}</span><strong>${b.current>=b.total?'目標達成':days<0?'目標日を過ぎています':days===0?'今日が目標日':'あと'+days+'日'}</strong></div>${b.current<b.total?`<div class="pace-main">${days>0?'目標に間に合うペース：毎日 '+fmt(Math.ceil(daily*100)/100)+' '+esc(b.unit):days===0?'今日の目標：残り '+fmt(left)+' '+esc(b.unit):'必要なペース：まず学習計画を立て直しましょう'}</div><div class="muted">${days>0?'週あたり約'+fmt(Math.ceil(daily*7*100)/100)+' '+esc(b.unit)+' が目安です':days===0?'今日が期限です。できる範囲で進めましょう':'目標日を変更するか、1日の学習量を増やすことを検討してください。'}</div>`:`<div class="pace-main">🎉 目標達成！</div>`}</div>`;})():`<div class="deadline muted">🎯 完了目標日：未設定（「編集」から設定できます）</div>`}
+ <div class="actions"><button class="outline" data-step="-1" data-id="${b.id}" ${b.current<=0?'disabled':''}>−1 ${esc(b.unit)}</button><button class="outline" data-step="${-Number(b.step||10)}" data-id="${b.id}" ${b.current<=0?'disabled':''}>−${fmt(b.step||10)}</button><button data-step="1" data-id="${b.id}" ${b.current>=b.total?'disabled':''}>＋1</button><button data-step="${Number(b.step||10)}" data-id="${b.id}" ${b.current>=b.total?'disabled':''}>＋${fmt(b.step||10)} ${esc(b.unit)}</button><span class="spacer"></span><button class="outline" data-edit="${b.id}">編集</button><button class="danger" data-delete="${b.id}" aria-label="削除">削除</button></div></article>`;
+ }).join('');
+ if(!document.getElementById('cards').innerHTML)document.getElementById('cards').innerHTML='<div class="empty">この科目の教材はありません。<br>「参考書を追加」から登録できます。</div>';
+}
+function openForm(book=null){document.getElementById('formbox').hidden=false;document.getElementById('formheading').textContent=book?'教材を編集':'新しい教材を登録';document.getElementById('editId').value=book?.id||'';document.getElementById('title').value=book?.title||'';document.getElementById('subject').value=book?.subject||'英語';document.getElementById('unit').value=book?.unit||'ページ';document.getElementById('step').value=book?.step??10;document.getElementById('total').value=book?.total??300;document.getElementById('current').value=book?.current??0;document.getElementById('deadline').value=book?.deadline||'';document.getElementById('formbox').scrollIntoView({behavior:'smooth',block:'start'});}
+document.getElementById('addToggle').addEventListener('click',()=>openForm());
+document.getElementById('cancel').addEventListener('click',()=>document.getElementById('formbox').hidden=true);
+document.getElementById('bookform').addEventListener('submit',e=>{e.preventDefault();const id=document.getElementById('editId').value,title=document.getElementById('title').value.trim(),unit=document.getElementById('unit').value.trim(),step=Number(document.getElementById('step').value),total=Number(document.getElementById('total').value),current=Number(document.getElementById('current').value),deadline=document.getElementById('deadline').value;if(!title||!unit||!Number.isFinite(step)||step<=0||!Number.isFinite(total)||total<=0||!Number.isFinite(current)||current<0||current>total){toast('入力内容を確認してください。記録量・全体数量は0より大きく、進捗は全体以下にしてください。');return;}if(id){books=books.map(b=>String(b.id)===id?{...b,title,subject:document.getElementById('subject').value,unit,step,total,current,deadline}:b);toast('教材を更新しました');}else{books.push({id:Date.now(),title,subject:document.getElementById('subject').value,unit,step,total,current,deadline,color:['#6478df','#20a58a','#df9b48','#a16ac7','#dc7287'][books.length%5]});toast('教材を追加しました');}document.getElementById('formbox').hidden=true;save();});
+document.getElementById('filters').addEventListener('click',e=>{const b=e.target.closest('[data-filter]');if(b){filter=b.dataset.filter;render();}});
+document.getElementById('cards').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const id=b.dataset.id;if(b.dataset.step){const book=books.find(x=>String(x.id)===id);book.current=Math.max(0,Math.min(book.total,Number((book.current+Number(b.dataset.step)).toFixed(4))));save();return;}if(b.dataset.edit){openForm(books.find(x=>String(x.id)===b.dataset.edit));return;}if(b.dataset.delete){const book=books.find(x=>String(x.id)===b.dataset.delete);if(confirm(`「${book.title}」を削除しますか？`)){books=books.filter(x=>String(x.id)!==b.dataset.delete);save();toast('削除しました');}}});
+document.getElementById('exportBtn').addEventListener('click',()=>{const blob=new Blob([JSON.stringify(books,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='study-progress-backup.json';a.click();URL.revokeObjectURL(url);toast('バックアップを書き出しました');});
+document.getElementById('importBtn').addEventListener('click',()=>document.getElementById('importFile').click());
+document.getElementById('importFile').addEventListener('change',async e=>{const file=e.target.files[0];if(!file)return;try{const parsed=JSON.parse(await file.text());if(!Array.isArray(parsed)||!parsed.every(b=>b.title&&b.unit&&Number(b.total)>0&&Number(b.current)>=0&&Number(b.current)<=Number(b.total)))throw Error();if(confirm('現在の教材一覧を、読み込むデータで置き換えますか？')){books=parsed;save();toast('データを読み込みました');}}catch{toast('読み込めませんでした。バックアップファイルを確認してください。')}e.target.value='';});
+// アカウント登録・ログイン
+document.getElementById('authForm').addEventListener('submit', async e=>{
+ e.preventDefault();
+ if(!auth){toast('先にFirebase設定を完了してください');return;}
+ const email=document.getElementById('authEmail').value.trim(), password=document.getElementById('authPassword').value;
+ try{await signInWithEmailAndPassword(auth,email,password);}
+ catch(err){toast(authError(err.code));}
+});
+document.getElementById('signupBtn').addEventListener('click',async()=>{
+ if(!auth){toast('先にFirebase設定を完了してください');return;}
+ const email=document.getElementById('authEmail').value.trim(), password=document.getElementById('authPassword').value;
+ if(!email || password.length<6){toast('メールアドレスと6文字以上のパスワードを入力してください');return;}
+ try{await createUserWithEmailAndPassword(auth,email,password);toast('アカウントを作成しました');}
+ catch(err){toast(authError(err.code));}
+});
+document.getElementById('logoutBtn').addEventListener('click',async()=>{if(auth)try{await signOut(auth);toast('ログアウトしました');}catch(err){toast(authError(err.code));}});
+function authError(code){
+ return ({'auth/email-already-in-use':'このメールアドレスは登録済みです。ログインしてください。','auth/invalid-email':'メールアドレスの形式を確認してください。','auth/weak-password':'パスワードは6文字以上にしてください。','auth/invalid-credential':'メールアドレスまたはパスワードが違います。','auth/network-request-failed':'ネットワーク接続を確認してください。'})[code] || `認証エラー：${code||'不明なエラー'}`;
+}
+if(auth){
+ onAuthStateChanged(auth,async user=>{
+  if(stopCloudListener){stopCloudListener();stopCloudListener=null;}
+  currentUser=user||null;
+  document.getElementById('logoutBtn').hidden=!user;
+  document.getElementById('loginBtn').hidden=!!user;
+  document.getElementById('signupBtn').hidden=!!user;
+  document.getElementById('authEmail').hidden=!!user;
+  document.getElementById('authPassword').hidden=!!user;
+  if(!user){
+   document.getElementById('authStatus').textContent='ログアウト中：このブラウザに保存されたデータを表示しています。';
+   books=load();render();return;
+  }
+  cloudLoading=true;
+  document.getElementById('authStatus').textContent=`${user.email} でログイン中 · クラウドデータを確認しています…`;
+  const ref=doc(db,'users',user.uid,'appData','studyProgress');
+  try{
+   const snap=await getDoc(ref);
+   if(!snap.exists()){
+    // 初回ログイン時はこのブラウザのデータをクラウドへ移行
+    await setDoc(ref,{books,updatedAt:Date.now()});
+   }else{
+    const remote=snap.data();
+    if(Array.isArray(remote.books)){books=remote.books;localStorage.setItem(KEY,JSON.stringify(books));render();}
+   }
+   document.getElementById('authStatus').textContent=`${user.email} でログイン中 · クラウド同期有効`;
+   stopCloudListener=onSnapshot(ref,s=>{
+    if(!s.exists()||!Array.isArray(s.data().books))return;
+    cloudLoading=true;books=s.data().books;localStorage.setItem(KEY,JSON.stringify(books));render();cloudLoading=false;
+    document.getElementById('authStatus').textContent=`${user.email} でログイン中 · 同期済み`;
+   },err=>{console.error(err);document.getElementById('authStatus').textContent='同期エラー：Firestoreのセキュリティルールを確認してください。';});
+  }catch(err){
+   console.error(err);document.getElementById('authStatus').textContent='クラウドに接続できません。Firebase設定とFirestoreルールを確認してください。';
+   toast('クラウド同期に失敗しました。ローカルデータは保持されています。');
+  }finally{cloudLoading=false;}
+ });
+}
+render();
+</script>
+</body></html>
