@@ -56,15 +56,17 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebas
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
 
-// Firebase Consoleで作成したWebアプリの設定を、下の値に貼り付けてください。
+// Firebase Consoleで作成した study-progress-9245d のWebアプリ設定（公開用）
 const firebaseConfig = {
-  apiKey: "ここにapiKey",
-  authDomain: "ここにprojectId.firebaseapp.com",
-  projectId: "ここにprojectId",
-  appId: "ここにappId"
+  apiKey: "AIzaSyAZhH0JgLhglWdIWNS4NOdkQsdogzKl1Qg",
+  authDomain: "study-progress-9245d.firebaseapp.com",
+  projectId: "study-progress-9245d",
+  storageBucket: "study-progress-9245d.firebasestorage.app",
+  messagingSenderId: "162590419885",
+  appId: "1:162590419885:web:bfffc391cf2f8c28720f24",
+  measurementId: "G-QNT8BT6HQN"
 };
-const firebaseReady = firebaseConfig.apiKey !== "ここにapiKey" &&
-                      firebaseConfig.projectId !== "ここにprojectId";
+const firebaseReady = true;
 let auth = null, db = null, currentUser = null, stopCloudListener = null, cloudLoading = false;
 if (firebaseReady) {
   const app = initializeApp(firebaseConfig);
