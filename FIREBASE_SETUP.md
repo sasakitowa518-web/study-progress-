@@ -4,9 +4,9 @@
 
 ## 1. Firebase プロジェクトを作成
 
-1. [Firebase Console](https://console.firebase.google.com/) でプロジェクトを作成します。
-2. プロジェクトの「アプリを追加」から Web アプリを登録します。
-3. 表示された Firebase 設定オブジェクトの `apiKey`、`authDomain`、`projectId`、`appId` をコピーします。
+1. [Firebase Console](https://console.firebase.google.com/project/study-progress-9245d/overview) で既存プロジェクト `study-progress-9245d` を開きます。
+2. すでに登録済みのWebアプリ設定をこのリポジトリに反映済みです。再登録や設定値の貼り付けは不要です。
+3. このアプリのWeb設定は公開用です。サービスアカウント鍵などの秘密情報を取得・共有・ブラウザへ追加しないでください。
 
 ## 2. メールアドレス認証を有効化
 
@@ -14,24 +14,14 @@ Firebase Console → **Authentication** → **始める** → **Sign-in method**
 
 ## 3. Firestore を作成してルールを設定
 
-1. Firebase Console → **Firestore Database** → **データベースを作成**。
-2. 「ルール」タブで、このリポジトリの `firestore.rules` の内容を公開します。
-3. ルールはログイン中のユーザーが自分の UID 配下のデータだけを読み書きできるよう制限します。テスト用の全公開ルールは使用しないでください。
+1. Firebase Console → **Firestore Database** → **データベースを作成**します。
+2. リポジトリのルートで `firebase login` を実行し、`firebase use --add` で `study-progress-9245d` を選択します。
+3. `firebase deploy --only firestore:rules` を実行し、`firestore.rules` を公開します。
+4. ルールはログイン中のユーザーが自分の UID 配下のデータだけを読み書きできる設定です。テスト用の全公開ルールは使わないでください。
 
-## 4. アプリに Firebase 設定を反映
+## 4. アプリのFirebase設定
 
-リポジトリの `index.html` を開き、`firebaseConfig` のプレースホルダーを Firebase Console の実際の値に置き換えます。
-
-```js
-const firebaseConfig = {
-  apiKey: "実際のapiKey",
-  authDomain: "実際のauthDomain",
-  projectId: "実際のprojectId",
-  appId: "実際のappId"
-};
-```
-
-`apiKey` だけでなく、`authDomain`、`projectId`、`appId` もすべて実際の値にします。Firebase Web 設定はブラウザに公開される前提ですが、データ保護は Authentication と Firestore セキュリティルールで行います。サービスアカウント鍵などの秘密情報をブラウザに埋め込まないでください。
+`index.html` には、提供された `study-progress-9245d` のWebアプリ設定を反映済みです。GitHubの `main` にあるファイルを使えば、追加のコード編集は不要です。これはブラウザ用の公開設定であり、認証とFirestoreルールでデータへのアクセスを保護します。
 
 ## 5. 公開する
 
@@ -41,10 +31,10 @@ Firebase CLI をインストールしてログインし、このリポジトリ�
 npm install -g firebase-tools
 firebase login
 firebase use --add
-firebase deploy
+firebase deploy --only hosting
 ```
 
-Hosting だけを公開する場合は `firebase deploy --only hosting`、ルールだけを反映する場合は `firebase deploy --only firestore:rules` を使えます。初回は Firebase Console で Hosting を有効化するか、CLI の案内に従ってください。
+Hosting とルールをまとめて公開する場合は `firebase deploy` を実行します。初回はCLIの案内に従ってHostingを設定してください。
 
 ## 6. 同期を確認
 
