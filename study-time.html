@@ -42,7 +42,38 @@ unsubLogs=onSnapshot(doc(db,'users',u.uid,'appData','studyTimeLog'),snap=>{logs=
 });
 function authError(err){const code=err?.code||'unknown';const messages={'auth/invalid-credential':'メールアドレスまたはパスワードが違います。','auth/user-not-found':'このメールアドレスのアカウントがありません。先に新規登録してください。','auth/wrong-password':'パスワードが違います。','auth/invalid-email':'メールアドレスの形式を確認してください。','auth/user-disabled':'このアカウントは無効になっています。','auth/too-many-requests':'試行回数が多すぎます。しばらく待ってから再試行してください。','auth/network-request-failed':'通信に失敗しました。ネット接続を確認してください。','auth/unauthorized-domain':'Firebaseでこのサイトのドメインが許可されていません。Firebase Authenticationの設定を確認してください。','auth/operation-not-allowed':'Firebase Authenticationでメール/パスワード認証が有効になっていません。','auth/email-already-in-use':'このメールアドレスは登録済みです。ログインしてください。','auth/weak-password':'パスワードは6文字以上にしてください。'};return (messages[code]||('Firebaseエラー: '+code))+'（'+code+'）'}$('authForm').addEventListener('submit',async e=>{e.preventDefault();try{await signInWithEmailAndPassword(auth,$('email').value.trim(),$('password').value)}catch(err){console.error('Login failed',err);const msg=authError(err);setStatus('ログイン失敗：'+msg);alert('ログインできませんでした。\\n'+msg)}});$('signup').onclick=async()=>{try{await createUserWithEmailAndPassword(auth,$('email').value.trim(),$('password').value)}catch(err){console.error('Signup failed',err);const msg=authError(err);setStatus('新規登録失敗：'+msg);alert('新規登録できませんでした。\\n'+msg)}};$('logout').onclick=()=>signOut(auth);
 $('entry').onsubmit=e=>{e.preventDefault();if(!user){alert('先にログインしてください');return}const b=books.find(x=>String(x.id)===$('book').value);if(!b){alert('参考書進捗ノートに登録済みの参考書を選んでください');return}logs.push({id:String(Date.now())+'-'+Math.random().toString(36).slice(2,7),bookId:b.id,bookTitle:b.title,date:$('date').value,minutes:Number($('minutes').value),memo:$('memo').value.trim(),createdAt:Date.now()});saveLogs();$('memo').value='';$('minutes').value=30};
-$('logs').onclick=e=>{const b=e.target.closest('[data-del]');if(!b)return;if(confirm('この記録を削除しますか？')){logs=logs.filter(l=>l.id!==b.dataset.del);saveLogs();render()}};$('filter').onchange=render;$('monthFilter').onchange=()=>{render();renderCalendar()};$('calPrev').onclick=()=>{const d=new Date(($('monthFilter').value||isoToday().slice(0,7))+'-01T12:00:00');d.setMonth(d.getMonth()-1);$('monthFilter').value=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');render();renderCalendar()};$('calNext').onclick=()=>{const d=new Date(($('monthFilter').value||isoToday().slice(0,7))+'-01T12:00:00');d.setMonth(d.getMonth()+1);$('monthFilter').value=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');render();renderCalendar()};$('calendarGrid').onclick=e=>{const d=e.target.closest('[data-caldate]')?.dataset.caldate;if(d){$('date').value=d;$('monthFilter').value=d.slice(0,7);$('record').scrollIntoView({behavior:'smooth'});}};document.querySelectorAll('[data-nav]').forEach(a=>a.addEventListener('click',()=>{document.querySelectorAll('[data-nav]').forEach(n=>n.classList.remove('active'));a.classList.add('active');if(a.dataset.nav==='record')setTimeout(()=>$('record').scrollIntoView({behavior:'smooth'}),0);if(a.dataset.nav==='calendar')setTimeout(()=>$('calendar').scrollIntoView({behavior:'smooth'}),0)}));
+$('logs').onclick=e=>{
+  const b=e.target.closest('[data-del]');
+  if(!b)return;
+  if(confirm('この記録を削除しますか？')){logs=logs.filter(l=>l.id!==b.dataset.del);saveLogs();render();}
+};
+$('filter').onchange=render;
+$('monthFilter').onchange=()=>{render();renderCalendar();};
+$('calPrev').onclick=()=>{
+  const d=new Date(( $('monthFilter').value || isoToday().slice(0,7) )+'-01T12:00:00');
+  d.setMonth(d.getMonth()-1);
+  $('monthFilter').value=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+  render();renderCalendar();
+};
+$('calNext').onclick=()=>{
+  const d=new Date(( $('monthFilter').value || isoToday().slice(0,7) )+'-01T12:00:00');
+  d.setMonth(d.getMonth()+1);
+  $('monthFilter').value=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+  render();renderCalendar();
+};
+$('calendarGrid').onclick=e=>{
+  const target=e.target.closest('[data-caldate]');
+  const date=target ? target.dataset.caldate : null;
+  if(date){$('date').value=date;$('monthFilter').value=date.slice(0,7);$('record').scrollIntoView({behavior:'smooth'});}
+};
+document.querySelectorAll('[data-nav]').forEach(a=>{
+  a.addEventListener('click',()=>{
+    document.querySelectorAll('[data-nav]').forEach(n=>n.classList.remove('active'));
+    a.classList.add('active');
+    if(a.dataset.nav==='record')setTimeout(()=>$('record').scrollIntoView({behavior:'smooth'}),0);
+    if(a.dataset.nav==='calendar')setTimeout(()=>$('calendar').scrollIntoView({behavior:'smooth'}),0);
+  });
+});
 function updateClock(){const s=seconds+(running?Math.floor((Date.now()-started)/1000):0);$('clock').textContent=[Math.floor(s/3600),Math.floor(s%3600/60),s%60].map(n=>String(n).padStart(2,'0')).join(':')}
 $('start').onclick=()=>{if(!$('timerBook').value){alert('参考書を選んでください');return}if(!user){alert('先にログインしてください');return}running=true;started=Date.now();$('start').disabled=true;$('pause').disabled=false;$('finish').disabled=false;interval=setInterval(updateClock,250)};
 $('pause').onclick=()=>{if(running){seconds+=Math.floor((Date.now()-started)/1000);running=false;clearInterval(interval);$('start').disabled=false;$('pause').disabled=true;updateClock()}};
